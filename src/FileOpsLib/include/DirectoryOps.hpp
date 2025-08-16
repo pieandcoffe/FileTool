@@ -5,7 +5,11 @@
 #ifndef FILETOOL_DIRECTORYOPS_HPP
 #define FILETOOL_DIRECTORYOPS_HPP
 
-class DirectoryOps {
+#include "FileOpsAPI.hpp"
+
+#include "FileOps.hpp"
+
+class FILE_OPS_API DirectoryOps {
 public:
     explicit DirectoryOps(const std::filesystem::path& path);
 

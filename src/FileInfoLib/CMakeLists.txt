@@ -1,9 +1,5 @@
-set(LIB_NAME FileInfoLib)
-
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-
-message("FileInfoLib INCLUDE_DIR ${INCLUDE_DIR}")
 
 set(SOURCES
         ${SRC_DIR}/DirectoryInfo.cpp
@@ -13,6 +9,7 @@ set(SOURCES
 )
 
 set(HEADERS
+        ${INCLUDE_DIR}/FileInfoAPI.hpp
         ${INCLUDE_DIR}/DirectoryInfo.hpp
         ${INCLUDE_DIR}/FileInfo.hpp
         ${INCLUDE_DIR}/PathInfo.hpp
@@ -22,6 +19,8 @@ set(HEADERS
 source_group("Source Files/FileInfoLib" FILES ${SOURCES})
 source_group("Header Files/FileInfoLib" FILES ${HEADERS})
 
-add_library(${LIB_NAME} STATIC ${SOURCES} ${HEADERS})
+add_library(${FILE_INFO_LIB_NAME} SHARED ${SOURCES} ${HEADERS})
 
-target_include_directories(${LIB_NAME} PUBLIC ${INCLUDE_DIR})
+target_compile_definitions(${FILE_INFO_LIB_NAME} PRIVATE _EXPORTING)
+
+target_include_directories(${FILE_INFO_LIB_NAME} PUBLIC ${INCLUDE_DIR})

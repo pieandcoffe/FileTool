@@ -4,9 +4,12 @@
 
 #ifndef FILETOOL_FILEINFO_HPP
 #define FILETOOL_FILEINFO_HPP
+
+#include "FileInfoAPI.hpp"
+
 #include "PathInfo.hpp"
 
-class FileInfo : PathInfo {
+class FILE_INFO_API FileInfo : PathInfo {
 public:
     using PathInfo::PathInfo;
 

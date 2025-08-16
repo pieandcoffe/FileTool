@@ -17,10 +17,12 @@ source_group("Header Files/App " FILES ${HEADERS})
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
+target_compile_definitions(${PROJECT_NAME} PUBLIC _IMPORTING)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        FileInfoLib
-        FileOpsLib
+        ${FILE_INFO_LIB_NAME}
+        ${FILE_OPS_LIB_NAME}
 )

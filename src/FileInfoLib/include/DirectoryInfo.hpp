@@ -4,9 +4,12 @@
 
 #ifndef FILETOOL_DIRECTORYINFO_HPP
 #define FILETOOL_DIRECTORYINFO_HPP
+
+#include "FileInfoAPI.hpp"
+
 #include "PathInfo.hpp"
 
-class DirectoryInfo : PathInfo {
+class FILE_INFO_API DirectoryInfo : PathInfo {
 public:
     std::vector<std::filesystem::path> listEntries(bool recursive = false) const;
 

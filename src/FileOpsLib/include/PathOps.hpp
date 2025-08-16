@@ -4,9 +4,12 @@
 
 #ifndef FILETOOL_PATHOPS_HPP
 #define FILETOOL_PATHOPS_HPP
+
+#include "FileOpsAPI.hpp"
+
 #include <filesystem>
 
-class PathOps {
+class FILE_OPS_API PathOps {
 public:
     static std::filesystem::path join(const std::filesystem::path& base, const std::filesystem::path& relative);
     static bool isWritable(const std::filesystem::path& path);

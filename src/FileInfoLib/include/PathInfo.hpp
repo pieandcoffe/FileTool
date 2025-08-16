@@ -4,13 +4,16 @@
 
 #ifndef FILETOOL_PATHINFO_HPP
 #define FILETOOL_PATHINFO_HPP
+
+#include "FileInfoAPI.hpp"
+
 #include <filesystem>
 
 /**
  * @class PathInfo
  * @brief Provides information and utilities for a filesystem path.
  */
-class PathInfo {
+class FILE_INFO_API PathInfo {
 public:
     /**
      * @brief Constructs a PathInfo object with the given path.

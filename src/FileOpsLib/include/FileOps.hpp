@@ -5,12 +5,14 @@
 #ifndef FILETOOL_FILEOPS_HPP
 #define FILETOOL_FILEOPS_HPP
 
+#include "FileOpsAPI.hpp"
+
 #include <filesystem>
 #include <string>
 #include <vector>
 
 
-class FileOps {
+class FILE_OPS_API FileOps {
 public:
     explicit FileOps(const std::filesystem::path& path);
 

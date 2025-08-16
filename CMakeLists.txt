@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(filetool VERSION 1.0.0 LANGUAGES CXX)
+project(FileTool VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
 # Output all binaries/libs to a common build folder
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)  # static libs
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)  # shared libs
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)  # executables
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/lib)  # static libs
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/lib)  # shared libs
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)      # executables
 
 message(STATUS "Project: ${PROJECT_NAME}")
 message(STATUS "Version: ${PROJECT_VERSION}")
@@ -52,10 +52,15 @@ else()
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -O2 -g")
 endif()
 
-set(FileInfoLib "${CMAKE_CURRENT_SOURCE_DIR}/src/FileInfoLib")
-set(FileOpsLib "${CMAKE_CURRENT_SOURCE_DIR}/src/FileOpsLib")
-set(App "${CMAKE_CURRENT_SOURCE_DIR}/src/App")
+set(FILE_INFO_LIB_NAME FileInfo)
+set(FILE_OPS_LIB_NAME FileOps)
 
-add_subdirectory(${FileInfoLib})
-add_subdirectory(${FileOpsLib})
-add_subdirectory(${App})
+set(FILE_INFO_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/FileInfoLib")
+set(FILE_OPS_LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/FileOpsLib")
+set(APP_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/App")
+set(TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/Tests")
+
+add_subdirectory(${FILE_INFO_LIB_DIR})
+add_subdirectory(${FILE_OPS_LIB_DIR})
+add_subdirectory(${APP_DIR})
+add_subdirectory(${TESTS_DIR})

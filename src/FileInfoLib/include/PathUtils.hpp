@@ -4,10 +4,13 @@
 
 #ifndef FILETOOL_PATHUTILS_HPP
 #define FILETOOL_PATHUTILS_HPP
+
+#include "FileInfoAPI.hpp"
+
 #include <filesystem>
 #include <string>
 
-class PathUtils {
+class FILE_INFO_API PathUtils {
 public:
     static std::string humanReadableSize(uintmax_t bytes);
 
