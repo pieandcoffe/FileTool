@@ -5,9 +5,8 @@
 #ifndef FILETOOL_PATHINFO_HPP
 #define FILETOOL_PATHINFO_HPP
 
-#include "FileInfoAPI.hpp"
-
 #include <filesystem>
+#include "FileInfoAPI.hpp"
 
 /**
  * @class PathInfo
@@ -70,7 +69,10 @@ public:
     std::filesystem::perms permissions() const;
 
 protected:
-    /** @brief The underlying filesystem path. */
+    /**
+     * @brief The underlying filesystem path.
+     */
     std::filesystem::path m_path;
 };
-#endif //FILETOOL_PATHINFO_HPP
+
+#endif // FILETOOL_PATHINFO_HPP

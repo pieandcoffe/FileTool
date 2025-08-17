@@ -3,41 +3,41 @@
 //
 
 #include "PathInfo.hpp"
-
 #include <filesystem>
 
-inline PathInfo::PathInfo(const std::filesystem::path &p) {
+PathInfo::PathInfo(const std::filesystem::path &p) {
     m_path = std::filesystem::canonical(p);
 }
 
-inline bool PathInfo::exists() const {
+bool PathInfo::exists() const {
     return std::filesystem::exists(m_path);
 }
 
-inline bool PathInfo::isFile() const {
-    return false;
+bool PathInfo::isFile() const {
+    return std::filesystem::is_regular_file(m_path);
 }
 
-inline bool PathInfo::isDirectory() const {
-    return false;
+bool PathInfo::isDirectory() const {
+    return std::filesystem::is_directory(m_path);
 }
 
-inline bool PathInfo::isSymLink() const {
-    return false;
+bool PathInfo::isSymLink() const {
+    return std::filesystem::is_symlink(m_path);
 }
 
-inline std::string PathInfo::filename() const {
-    return "false";
+std::string PathInfo::filename() const {
+    return m_path.filename().string();
 }
 
-inline std::string PathInfo::extension() const {
-    return "false";
+std::string PathInfo::extension() const {
+    return m_path.extension().string();
 }
 
-inline std::filesystem::path PathInfo::parentPath() const {
-    return std::filesystem::path();
+std::filesystem::path PathInfo::parentPath() const {
+    return m_path.parent_path();
 }
 
-inline std::filesystem::perms PathInfo::permissions() const {
-    return std::filesystem::perms();
+std::filesystem::perms PathInfo::permissions() const {
+    std::error_code ec;
+    return std::filesystem::status(m_path, ec).permissions();
 }
