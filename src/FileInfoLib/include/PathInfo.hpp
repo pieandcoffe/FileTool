@@ -6,6 +6,8 @@
 #define FILETOOL_PATHINFO_HPP
 
 #include <filesystem>
+#include <memory>
+
 #include "FileInfoAPI.hpp"
 
 /**
@@ -72,7 +74,7 @@ protected:
     /**
      * @brief The underlying filesystem path.
      */
-    std::filesystem::path m_path;
+    std::unique_ptr<std::filesystem::path> m_pPath;
 };
 
 #endif // FILETOOL_PATHINFO_HPP

@@ -13,7 +13,7 @@ FileInfo::FileInfo(const std::filesystem::path &p) : PathInfo(p) {
 
 uintmax_t FileInfo::size() const {
     std::error_code ec;
-    return std::filesystem::is_regular_file(m_path) ? std::filesystem::file_size(m_path, ec) : 0;
+    return std::filesystem::is_regular_file(*m_pPath) ? std::filesystem::file_size(*m_pPath, ec) : 0;
 }
 
 std::string FileInfo::sizeHumanReadable() const {
@@ -32,11 +32,11 @@ std::string FileInfo::sizeHumanReadable() const {
 
 std::chrono::system_clock::time_point FileInfo::creationTime() const {
     std::error_code ec;
-    if (!std::filesystem::exists(m_path)) {
+    if (!std::filesystem::exists(*m_pPath)) {
         return std::chrono::system_clock::time_point{};
     }
 
-    auto ftime = std::filesystem::last_write_time(m_path, ec);
+    auto ftime = std::filesystem::last_write_time(*m_pPath, ec);
 
     // Convert to system_clock::time_point
     return std::chrono::time_point_cast<std::chrono::system_clock::duration>(
@@ -46,11 +46,11 @@ std::chrono::system_clock::time_point FileInfo::creationTime() const {
 
 std::chrono::system_clock::time_point FileInfo::lastModifiedTime() const {
     std::error_code ec;
-    if (!std::filesystem::exists(m_path)) {
+    if (!std::filesystem::exists(*m_pPath)) {
         return std::chrono::system_clock::time_point{};
     }
 
-    auto ftime = std::filesystem::last_write_time(m_path, ec);
+    auto ftime = std::filesystem::last_write_time(*m_pPath, ec);
 
     return std::chrono::time_point_cast<std::chrono::system_clock::duration>(
         ftime - decltype(ftime)::clock::now() + std::chrono::system_clock::now()
