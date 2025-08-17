@@ -5,6 +5,7 @@
 #include "PathUtils.hpp"
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 std::string PathUtils::humanReadableSize(uintmax_t bytes) {
     static const char* sizes[] = { "B", "KB", "MB", "GB", "TB" };
