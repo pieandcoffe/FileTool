@@ -7,24 +7,34 @@
 #include <iterator>
 #include <stdexcept>
 
+class FileOps::Impl {
+public:
+    explicit Impl(const std::filesystem::path& p)
+        : m_path(std::filesystem::canonical(p)) {}
+
+    std::filesystem::path m_path;
+};
+
 // Constructor
 FileOps::FileOps(const std::filesystem::path& path)
-    : m_path(path) {}
+    : m_impl(std::make_unique<Impl>(path)) {}
+
+FileOps::~FileOps() = default;
 
 bool FileOps::exists() const {
-    return std::filesystem::exists(m_path);
+    return std::filesystem::exists(path());
 }
 
 bool FileOps::copyTo(const std::filesystem::path& destination, bool overwrite) const {
     try {
         if (overwrite) {
             std::filesystem::copy_file(
-                m_path, destination,
+                path(), destination,
                 std::filesystem::copy_options::overwrite_existing
             );
         } else {
             std::filesystem::copy_file(
-                m_path, destination,
+                path(), destination,
                 std::filesystem::copy_options::skip_existing
             );
         }
@@ -39,7 +49,7 @@ bool FileOps::moveTo(const std::filesystem::path& destination, bool overwrite) c
         if (overwrite && std::filesystem::exists(destination)) {
             std::filesystem::remove(destination);
         }
-        std::filesystem::rename(m_path, destination);
+        std::filesystem::rename(path(), destination);
         return true;
     } catch (...) {
         return false;
@@ -48,9 +58,9 @@ bool FileOps::moveTo(const std::filesystem::path& destination, bool overwrite) c
 
 bool FileOps::rename(const std::string& newName) {
     try {
-        auto newPath = m_path.parent_path() / newName;
-        std::filesystem::rename(m_path, newPath);
-        m_path = newPath;
+        auto newPath = path().parent_path() / newName;
+        std::filesystem::rename(path(), newPath);
+        path() = newPath;
         return true;
     } catch (...) {
         return false;
@@ -59,25 +69,25 @@ bool FileOps::rename(const std::string& newName) {
 
 bool FileOps::remove() {
     try {
-        return std::filesystem::remove(m_path);
+        return std::filesystem::remove(path());
     } catch (...) {
         return false;
     }
 }
 
 std::string FileOps::readText() const {
-    std::ifstream file(m_path);
+    std::ifstream file(path());
     if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file for reading: " + m_path.string());
+        throw std::runtime_error("Failed to open file for reading: " + path().string());
     }
     return std::string((std::istreambuf_iterator<char>(file)),
                        std::istreambuf_iterator<char>());
 }
 
 std::vector<uint8_t> FileOps::readBinary() const {
-    std::ifstream file(m_path, std::ios::binary);
+    std::ifstream file(path(), std::ios::binary);
     if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file for binary reading: " + m_path.string());
+        throw std::runtime_error("Failed to open file for binary reading: " + path().string());
     }
     return std::vector<uint8_t>((std::istreambuf_iterator<char>(file)),
                                 std::istreambuf_iterator<char>());
@@ -85,10 +95,10 @@ std::vector<uint8_t> FileOps::readBinary() const {
 
 bool FileOps::writeText(const std::string& content, bool overwrite) const {
     try {
-        if (!overwrite && std::filesystem::exists(m_path)) {
+        if (!overwrite && std::filesystem::exists(path())) {
             return false;
         }
-        std::ofstream file(m_path, std::ios::trunc);
+        std::ofstream file(path(), std::ios::trunc);
         if (!file.is_open()) {
             return false;
         }
@@ -101,10 +111,10 @@ bool FileOps::writeText(const std::string& content, bool overwrite) const {
 
 bool FileOps::writeBinary(const std::vector<uint8_t>& data, bool overwrite) const {
     try {
-        if (!overwrite && std::filesystem::exists(m_path)) {
+        if (!overwrite && std::filesystem::exists(path())) {
             return false;
         }
-        std::ofstream file(m_path, std::ios::binary | std::ios::trunc);
+        std::ofstream file(path(), std::ios::binary | std::ios::trunc);
         if (!file.is_open()) {
             return false;
         }
@@ -113,4 +123,8 @@ bool FileOps::writeBinary(const std::vector<uint8_t>& data, bool overwrite) cons
     } catch (...) {
         return false;
     }
+}
+
+std::filesystem::path FileOps::path() const {
+    return m_impl->m_path;
 }

@@ -22,10 +22,24 @@ public:
      */
     explicit FileOps(const std::filesystem::path& path);
 
+    // Rule of five (needed because of unique_ptr)
+
+    // Default virtual destructor
+    virtual ~FileOps();
+
+    // Non-copyable
+    FileOps(const FileOps&) = delete;
+    FileOps& operator=(const FileOps&) = delete;
+
+    // Movable
+    FileOps(FileOps&&) noexcept = default;
+    FileOps& operator=(FileOps&&) noexcept = default;
+    
     /**
      * @brief Checks if the file exists.
      * @return True if the file exists, false otherwise.
      */
+    [[nodiscard]]
     bool exists() const;
 
     // Basic file operations
@@ -36,6 +50,7 @@ public:
      * @param overwrite If true, overwrites the destination file if it exists.
      * @return True if copy was successful, false otherwise.
      */
+    [[nodiscard]]
     bool copyTo(const std::filesystem::path& destination, bool overwrite = false) const;
 
     /**
@@ -44,6 +59,7 @@ public:
      * @param overwrite If true, overwrites the destination file if it exists.
      * @return True if move was successful, false otherwise.
      */
+    [[nodiscard]]
     bool moveTo(const std::filesystem::path& destination, bool overwrite = false) const;
 
     /**
@@ -65,12 +81,14 @@ public:
      * @brief Reads the file as text.
      * @return File contents as a string.
      */
+    [[nodiscard]]
     std::string readText() const;
 
     /**
      * @brief Reads the file as binary data.
      * @return File contents as a vector of bytes.
      */
+    [[nodiscard]]
     std::vector<uint8_t> readBinary() const;
 
     /**
@@ -79,6 +97,7 @@ public:
      * @param overwrite If true, overwrites the file if it exists.
      * @return True if write was successful, false otherwise.
      */
+    [[nodiscard]]
     bool writeText(const std::string& content, bool overwrite = true) const;
 
     /**
@@ -87,13 +106,20 @@ public:
      * @param overwrite If true, overwrites the file if it exists.
      * @return True if write was successful, false otherwise.
      */
+    [[nodiscard]]
     bool writeBinary(const std::vector<uint8_t>& data, bool overwrite = true) const;
 
+protected:
+    [[nodiscard]]
+    std::filesystem::path path() const;
+
 private:
+    class Impl;
+
     /**
      * @brief The underlying file path.
      */
-    std::filesystem::path m_path;
+    std::unique_ptr<Impl> m_impl;
 };
 
 #endif // FILETOOL_FILEOPS_HPP
