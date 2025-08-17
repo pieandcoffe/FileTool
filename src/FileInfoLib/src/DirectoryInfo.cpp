@@ -16,11 +16,11 @@ std::vector<std::filesystem::path> DirectoryInfo::listEntries(bool recursive) co
     if (!isDirectory()) return entries;
 
     if (recursive) {
-        for (const auto &entry: std::filesystem::recursive_directory_iterator(*m_pPath)) {
+        for (const auto &entry: std::filesystem::recursive_directory_iterator(path())) {
             entries.push_back(entry.path());
         }
     } else {
-        for (const auto &entry: std::filesystem::directory_iterator(*m_pPath)) {
+        for (const auto &entry: std::filesystem::directory_iterator(path())) {
             entries.push_back(entry.path());
         }
     }

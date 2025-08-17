@@ -13,7 +13,7 @@ FileInfo::FileInfo(const std::filesystem::path &p) : PathInfo(p) {
 
 uintmax_t FileInfo::size() const {
     std::error_code ec;
-    return std::filesystem::is_regular_file(*m_pPath) ? std::filesystem::file_size(*m_pPath, ec) : 0;
+    return std::filesystem::is_regular_file(path()) ? std::filesystem::file_size(path(), ec) : 0;
 }
 
 std::string FileInfo::sizeHumanReadable() const {
@@ -32,11 +32,11 @@ std::string FileInfo::sizeHumanReadable() const {
 
 std::chrono::system_clock::time_point FileInfo::creationTime() const {
     std::error_code ec;
-    if (!std::filesystem::exists(*m_pPath)) {
+    if (!std::filesystem::exists(path())) {
         return std::chrono::system_clock::time_point{};
     }
 
-    auto ftime = std::filesystem::last_write_time(*m_pPath, ec);
+    auto ftime = std::filesystem::last_write_time(path(), ec);
 
     // Convert to system_clock::time_point
     return std::chrono::time_point_cast<std::chrono::system_clock::duration>(
@@ -46,11 +46,11 @@ std::chrono::system_clock::time_point FileInfo::creationTime() const {
 
 std::chrono::system_clock::time_point FileInfo::lastModifiedTime() const {
     std::error_code ec;
-    if (!std::filesystem::exists(*m_pPath)) {
+    if (!std::filesystem::exists(path())) {
         return std::chrono::system_clock::time_point{};
     }
 
-    auto ftime = std::filesystem::last_write_time(*m_pPath, ec);
+    auto ftime = std::filesystem::last_write_time(path(), ec);
 
     return std::chrono::time_point_cast<std::chrono::system_clock::duration>(
         ftime - decltype(ftime)::clock::now() + std::chrono::system_clock::now()
@@ -61,10 +61,4 @@ std::chrono::system_clock::time_point FileInfo::lastModifiedTime() const {
 std::chrono::system_clock::time_point FileInfo::lastAccessedTime() const {
     // Not portable: std::filesystem does not provide last access time in C++17
     return std::chrono::system_clock::time_point{};
-}
-
-std::string FileInfo::mimeType() const {
-    // Not portable: C++17 std::filesystem does not provide MIME type
-    // You may use platform-specific code or external libraries
-    return {};
 }

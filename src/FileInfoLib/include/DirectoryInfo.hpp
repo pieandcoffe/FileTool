@@ -17,13 +17,14 @@
  */
 class FILE_INFO_API DirectoryInfo : public PathInfo {
 public:
-    DirectoryInfo(const std::filesystem::path &p);
-    
+    explicit DirectoryInfo(const std::filesystem::path &p);
+
     /**
      * @brief Lists all entries (files and directories) in the directory.
      * @param recursive If true, lists entries recursively.
      * @return Vector of paths to all entries.
      */
+    [[nodiscard]]
     std::vector<std::filesystem::path> listEntries(bool recursive = false) const;
 
     /**
@@ -31,6 +32,7 @@ public:
      * @param recursive If true, lists files recursively.
      * @return Vector of paths to all files.
      */
+    [[nodiscard]]
     std::vector<std::filesystem::path> listFiles(bool recursive = false) const;
 
     /**
@@ -38,6 +40,7 @@ public:
      * @param recursive If true, lists directories recursively.
      * @return Vector of paths to all directories.
      */
+    [[nodiscard]]
     std::vector<std::filesystem::path> listDirectories(bool recursive = false) const;
 
     /**
@@ -45,6 +48,7 @@ public:
      * @param recursive If true, counts files recursively.
      * @return Number of files.
      */
+    [[nodiscard]]
     size_t fileCount(bool recursive = false) const;
 
     /**
@@ -52,6 +56,7 @@ public:
      * @param recursive If true, counts directories recursively.
      * @return Number of directories.
      */
+    [[nodiscard]]
     size_t directoryCount(bool recursive = false) const;
 
     /**
@@ -59,6 +64,7 @@ public:
      * @param recursive If true, includes files in subdirectories.
      * @return Total size in bytes.
      */
+    [[nodiscard]]
     uintmax_t totalSize(bool recursive = false) const;
 };
 
