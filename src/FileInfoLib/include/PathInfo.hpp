@@ -28,12 +28,12 @@ public:
     FILE_INFO_API virtual ~PathInfo();
 
     // Non-copyable
-    FILE_INFO_API PathInfo(const PathInfo&) = delete;
-    FILE_INFO_API PathInfo& operator=(const PathInfo&) = delete;
+    PathInfo(const PathInfo&) = delete;
+    PathInfo& operator=(const PathInfo&) = delete;
 
     // Movable
-    FILE_INFO_API PathInfo(PathInfo&&) noexcept = default;
-    FILE_INFO_API PathInfo& operator=(PathInfo&&) noexcept = default;
+    FILE_INFO_API PathInfo(PathInfo&&) noexcept;
+    FILE_INFO_API PathInfo& operator=(PathInfo&&) noexcept;
 
     /**
      * @brief Checks if the path exists in the filesystem.
@@ -97,8 +97,7 @@ protected:
     FILE_INFO_API const std::filesystem::path& path() const;
 
 private:
-    struct PathInfoImpl;
-
+    class PathInfoImpl;
     std::unique_ptr<PathInfoImpl> m_impl;
 };
 

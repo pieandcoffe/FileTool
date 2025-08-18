@@ -5,7 +5,7 @@
 #include "PathInfo.hpp"
 #include <filesystem>
 
-struct PathInfo::PathInfoImpl {
+class PathInfo::PathInfoImpl {
 public:
     explicit PathInfoImpl(const std::filesystem::path& p)
         : m_path(std::filesystem::canonical(p)) {}
@@ -17,6 +17,9 @@ PathInfo::PathInfo(const std::filesystem::path &p)
     : m_impl(std::make_unique<PathInfoImpl>(p)) {}
 
 PathInfo::~PathInfo() = default;
+
+PathInfo::PathInfo(PathInfo &&) noexcept = default;
+PathInfo & PathInfo::operator=(PathInfo &&) noexcept = default;
 
 bool PathInfo::exists() const {
     return std::filesystem::exists(path());

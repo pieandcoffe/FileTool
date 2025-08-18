@@ -28,12 +28,12 @@ public:
     FILE_OPS_API virtual ~FileOps();
 
     // Non-copyable
-    FILE_OPS_API FileOps(const FileOps&) = delete;
-    FILE_OPS_API FileOps& operator=(const FileOps&) = delete;
+    FileOps(const FileOps&) = delete;
+    FileOps& operator=(const FileOps&) = delete;
 
     // Movable
-    FILE_OPS_API FileOps(FileOps&&) noexcept = default;
-    FILE_OPS_API FileOps& operator=(FileOps&&) noexcept = default;
+    FILE_OPS_API FileOps(FileOps&&) noexcept;
+    FILE_OPS_API FileOps& operator=(FileOps&&) noexcept;
 
     /**
      * @brief Checks if the file exists.
@@ -114,7 +114,7 @@ protected:
     FILE_OPS_API std::filesystem::path path() const;
 
 private:
-    struct FileOpsImpl;
+    class FileOpsImpl;
 
     std::unique_ptr<FileOpsImpl> m_impl;
 };

@@ -7,7 +7,8 @@
 #include <iterator>
 #include <stdexcept>
 
-struct FileOps::FileOpsImpl {
+class FileOps::FileOpsImpl {
+public:
     explicit FileOpsImpl(const std::filesystem::path &p)
         : m_path(std::filesystem::canonical(p)) {
     }
@@ -21,6 +22,9 @@ FileOps::FileOps(const std::filesystem::path &path)
 }
 
 FileOps::~FileOps() = default;
+
+FileOps::FileOps(FileOps &&) noexcept = default;
+FileOps & FileOps::operator=(FileOps &&) noexcept = default;
 
 bool FileOps::exists() const {
     return std::filesystem::exists(path());
