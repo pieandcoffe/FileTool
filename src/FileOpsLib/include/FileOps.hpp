@@ -34,7 +34,7 @@ public:
     // Movable
     FileOps(FileOps&&) noexcept = default;
     FileOps& operator=(FileOps&&) noexcept = default;
-    
+
     /**
      * @brief Checks if the file exists.
      * @return True if the file exists, false otherwise.
@@ -114,12 +114,14 @@ protected:
     std::filesystem::path path() const;
 
 private:
-    class Impl;
+    struct Impl;
 
-    /**
-     * @brief The underlying file path.
-     */
-    std::unique_ptr<Impl> m_impl;
+    /// Custom deleter to avoid DLL-interface issues with MSVC
+    struct ImplDeleter {
+        void operator()(const Impl* p) const noexcept;
+    };
+
+    std::unique_ptr<Impl, ImplDeleter> m_impl;
 };
 
 #endif // FILETOOL_FILEOPS_HPP

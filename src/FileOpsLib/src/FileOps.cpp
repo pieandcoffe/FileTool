@@ -7,17 +7,26 @@
 #include <iterator>
 #include <stdexcept>
 
-class FileOps::Impl {
+struct FileOps::Impl {
 public:
     explicit Impl(const std::filesystem::path& p)
         : m_path(std::filesystem::canonical(p)) {}
 
+    static std::unique_ptr<Impl, ImplDeleter> makeImpl(const std::filesystem::path &p) {
+        return std::unique_ptr<Impl, ImplDeleter>(std::make_unique<Impl>(p).release());
+    }
+
     std::filesystem::path m_path;
 };
 
+// custom deleter definition
+void FileOps::ImplDeleter::operator()(const Impl* p) const noexcept {
+    delete p;
+}
+
 // Constructor
 FileOps::FileOps(const std::filesystem::path& path)
-    : m_impl(std::make_unique<Impl>(path)) {}
+    : m_impl(Impl::makeImpl(path)) {}
 
 FileOps::~FileOps() = default;
 
