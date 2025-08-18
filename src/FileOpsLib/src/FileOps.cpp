@@ -7,26 +7,18 @@
 #include <iterator>
 #include <stdexcept>
 
-struct FileOps::Impl {
-public:
-    explicit Impl(const std::filesystem::path& p)
-        : m_path(std::filesystem::canonical(p)) {}
-
-    static std::unique_ptr<Impl, ImplDeleter> makeImpl(const std::filesystem::path &p) {
-        return std::unique_ptr<Impl, ImplDeleter>(std::make_unique<Impl>(p).release());
+struct FileOps::FileOpsImpl {
+    explicit FileOpsImpl(const std::filesystem::path &p)
+        : m_path(std::filesystem::canonical(p)) {
     }
 
     std::filesystem::path m_path;
 };
 
-// custom deleter definition
-void FileOps::ImplDeleter::operator()(const Impl* p) const noexcept {
-    delete p;
-}
-
 // Constructor
-FileOps::FileOps(const std::filesystem::path& path)
-    : m_impl(Impl::makeImpl(path)) {}
+FileOps::FileOps(const std::filesystem::path &path)
+    : m_impl(std::make_unique<FileOpsImpl>(path)) {
+}
 
 FileOps::~FileOps() = default;
 
@@ -34,7 +26,7 @@ bool FileOps::exists() const {
     return std::filesystem::exists(path());
 }
 
-bool FileOps::copyTo(const std::filesystem::path& destination, bool overwrite) const {
+bool FileOps::copyTo(const std::filesystem::path &destination, bool overwrite) const {
     try {
         if (overwrite) {
             std::filesystem::copy_file(
@@ -53,7 +45,7 @@ bool FileOps::copyTo(const std::filesystem::path& destination, bool overwrite) c
     }
 }
 
-bool FileOps::moveTo(const std::filesystem::path& destination, bool overwrite) const {
+bool FileOps::moveTo(const std::filesystem::path &destination, bool overwrite) const {
     try {
         if (overwrite && std::filesystem::exists(destination)) {
             std::filesystem::remove(destination);
@@ -65,7 +57,7 @@ bool FileOps::moveTo(const std::filesystem::path& destination, bool overwrite) c
     }
 }
 
-bool FileOps::rename(const std::string& newName) {
+bool FileOps::rename(const std::string &newName) {
     try {
         auto newPath = path().parent_path() / newName;
         std::filesystem::rename(path(), newPath);
@@ -102,7 +94,7 @@ std::vector<uint8_t> FileOps::readBinary() const {
                                 std::istreambuf_iterator<char>());
 }
 
-bool FileOps::writeText(const std::string& content, bool overwrite) const {
+bool FileOps::writeText(const std::string &content, bool overwrite) const {
     try {
         if (!overwrite && std::filesystem::exists(path())) {
             return false;
@@ -118,7 +110,7 @@ bool FileOps::writeText(const std::string& content, bool overwrite) const {
     }
 }
 
-bool FileOps::writeBinary(const std::vector<uint8_t>& data, bool overwrite) const {
+bool FileOps::writeBinary(const std::vector<uint8_t> &data, bool overwrite) const {
     try {
         if (!overwrite && std::filesystem::exists(path())) {
             return false;
@@ -127,7 +119,7 @@ bool FileOps::writeBinary(const std::vector<uint8_t>& data, bool overwrite) cons
         if (!file.is_open()) {
             return false;
         }
-        file.write(reinterpret_cast<const char*>(data.data()), data.size());
+        file.write(reinterpret_cast<const char *>(data.data()), data.size());
         return true;
     } catch (...) {
         return false;

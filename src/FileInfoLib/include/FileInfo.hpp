@@ -14,47 +14,47 @@
  * @class FileInfo
  * @brief Provides utilities for file inspection and metadata.
  */
-class FILE_INFO_API FileInfo : public PathInfo {
+class FileInfo : public PathInfo {
 public:
     /**
      * @brief Default constructor.
      */
-    explicit FileInfo(const std::filesystem::path &p);
+    FILE_INFO_API explicit FileInfo(const std::filesystem::path &p);
 
     /**
      * @brief Gets the size of the file in bytes.
      * @return File size in bytes.
      */
     [[nodiscard]]
-    uintmax_t size() const;
+    FILE_INFO_API uintmax_t size() const;
 
     /**
      * @brief Gets the file size in a human-readable format (e.g., "1.2 MB").
      * @return File size as a string.
      */
     [[nodiscard]]
-    std::string sizeHumanReadable() const;
+    FILE_INFO_API std::string sizeHumanReadable() const;
 
     /**
      * @brief Gets the creation time of the file.
      * @return Creation time as a std::chrono::system_clock::time_point.
      */
     [[nodiscard]]
-    std::chrono::system_clock::time_point creationTime() const;
+    FILE_INFO_API std::chrono::system_clock::time_point creationTime() const;
 
     /**
      * @brief Gets the last modification time of the file.
      * @return Last modified time as a std::chrono::system_clock::time_point.
      */
     [[nodiscard]]
-    std::chrono::system_clock::time_point lastModifiedTime() const;
+    FILE_INFO_API std::chrono::system_clock::time_point lastModifiedTime() const;
 
     /**
      * @brief Gets the last accessed time of the file.
      * @return Last accessed time as a std::chrono::system_clock::time_point.
      */
     [[nodiscard]]
-    std::chrono::system_clock::time_point lastAccessedTime() const;
+    FILE_INFO_API std::chrono::system_clock::time_point lastAccessedTime() const;
 };
 
 #endif // FILETOOL_FILEINFO_HPP

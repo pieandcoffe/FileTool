@@ -5,25 +5,16 @@
 #include "PathInfo.hpp"
 #include <filesystem>
 
-struct PathInfo::Impl {
+struct PathInfo::PathInfoImpl {
 public:
-    explicit Impl(const std::filesystem::path& p)
+    explicit PathInfoImpl(const std::filesystem::path& p)
         : m_path(std::filesystem::canonical(p)) {}
-
-    static std::unique_ptr<Impl, ImplDeleter> makeImpl(const std::filesystem::path &p) {
-        return std::unique_ptr<Impl, ImplDeleter>(std::make_unique<Impl>(p).release());
-    }
 
     std::filesystem::path m_path;
 };
 
-// custom deleter definition
-void PathInfo::ImplDeleter::operator()(const Impl* p) const noexcept {
-    delete p;
-}
-
 PathInfo::PathInfo(const std::filesystem::path &p)
-    : m_impl(Impl::makeImpl(p)) {}
+    : m_impl(std::make_unique<PathInfoImpl>(p)) {}
 
 PathInfo::~PathInfo() = default;
 

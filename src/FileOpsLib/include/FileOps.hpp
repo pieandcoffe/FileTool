@@ -14,33 +14,33 @@
  * @class FileOps
  * @brief Provides basic and advanced file operations, including copying, moving, renaming, reading, and writing.
  */
-class FILE_OPS_API FileOps {
+class FileOps {
 public:
     /**
      * @brief Constructs a FileOps object for the given path.
      * @param path The file path to operate on.
      */
-    explicit FileOps(const std::filesystem::path& path);
+    FILE_OPS_API explicit FileOps(const std::filesystem::path& path);
 
     // Rule of five (needed because of unique_ptr)
 
     // Default virtual destructor
-    virtual ~FileOps();
+    FILE_OPS_API virtual ~FileOps();
 
     // Non-copyable
-    FileOps(const FileOps&) = delete;
-    FileOps& operator=(const FileOps&) = delete;
+    FILE_OPS_API FileOps(const FileOps&) = delete;
+    FILE_OPS_API FileOps& operator=(const FileOps&) = delete;
 
     // Movable
-    FileOps(FileOps&&) noexcept = default;
-    FileOps& operator=(FileOps&&) noexcept = default;
+    FILE_OPS_API FileOps(FileOps&&) noexcept = default;
+    FILE_OPS_API FileOps& operator=(FileOps&&) noexcept = default;
 
     /**
      * @brief Checks if the file exists.
      * @return True if the file exists, false otherwise.
      */
     [[nodiscard]]
-    bool exists() const;
+    FILE_OPS_API bool exists() const;
 
     // Basic file operations
 
@@ -51,7 +51,7 @@ public:
      * @return True if copy was successful, false otherwise.
      */
     [[nodiscard]]
-    bool copyTo(const std::filesystem::path& destination, bool overwrite = false) const;
+    FILE_OPS_API bool copyTo(const std::filesystem::path& destination, bool overwrite = false) const;
 
     /**
      * @brief Moves the file to a destination.
@@ -60,20 +60,20 @@ public:
      * @return True if move was successful, false otherwise.
      */
     [[nodiscard]]
-    bool moveTo(const std::filesystem::path& destination, bool overwrite = false) const;
+    FILE_OPS_API bool moveTo(const std::filesystem::path& destination, bool overwrite = false) const;
 
     /**
      * @brief Renames the file.
      * @param newName The new name for the file.
      * @return True if rename was successful, false otherwise.
      */
-    bool rename(const std::string& newName);
+    FILE_OPS_API bool rename(const std::string& newName);
 
     /**
      * @brief Removes the file.
      * @return True if removal was successful, false otherwise.
      */
-    bool remove();
+    FILE_OPS_API bool remove();
 
     // Optional file content operations
 
@@ -82,14 +82,14 @@ public:
      * @return File contents as a string.
      */
     [[nodiscard]]
-    std::string readText() const;
+    FILE_OPS_API std::string readText() const;
 
     /**
      * @brief Reads the file as binary data.
      * @return File contents as a vector of bytes.
      */
     [[nodiscard]]
-    std::vector<uint8_t> readBinary() const;
+    FILE_OPS_API std::vector<uint8_t> readBinary() const;
 
     /**
      * @brief Writes text content to the file.
@@ -98,7 +98,7 @@ public:
      * @return True if write was successful, false otherwise.
      */
     [[nodiscard]]
-    bool writeText(const std::string& content, bool overwrite = true) const;
+    FILE_OPS_API bool writeText(const std::string& content, bool overwrite = true) const;
 
     /**
      * @brief Writes binary data to the file.
@@ -107,21 +107,16 @@ public:
      * @return True if write was successful, false otherwise.
      */
     [[nodiscard]]
-    bool writeBinary(const std::vector<uint8_t>& data, bool overwrite = true) const;
+    FILE_OPS_API bool writeBinary(const std::vector<uint8_t>& data, bool overwrite = true) const;
 
 protected:
     [[nodiscard]]
-    std::filesystem::path path() const;
+    FILE_OPS_API std::filesystem::path path() const;
 
 private:
-    struct Impl;
+    struct FileOpsImpl;
 
-    /// Custom deleter to avoid DLL-interface issues with MSVC
-    struct ImplDeleter {
-        void operator()(const Impl* p) const noexcept;
-    };
-
-    std::unique_ptr<Impl, ImplDeleter> m_impl;
+    std::unique_ptr<FileOpsImpl> m_impl;
 };
 
 #endif // FILETOOL_FILEOPS_HPP

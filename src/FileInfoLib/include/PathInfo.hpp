@@ -14,89 +14,92 @@
  * @class PathInfo
  * @brief Provides information and utilities for a filesystem path.
  */
-class FILE_INFO_API PathInfo {
+class PathInfo {
 public:
     /**
      * @brief Constructs a PathInfo object with the given path.
      * @param p The filesystem path to be managed.
      */
-    explicit PathInfo(const std::filesystem::path &p);
+    FILE_INFO_API explicit PathInfo(const std::filesystem::path &p);
 
     // Rule of five (needed because of unique_ptr)
 
     // Default virtual destructor
-    virtual ~PathInfo();
+    FILE_INFO_API virtual ~PathInfo();
 
     // Non-copyable
-    PathInfo(const PathInfo&) = delete;
-    PathInfo& operator=(const PathInfo&) = delete;
+    FILE_INFO_API PathInfo(const PathInfo&) = delete;
+    FILE_INFO_API PathInfo& operator=(const PathInfo&) = delete;
 
     // Movable
-    PathInfo(PathInfo&&) noexcept = default;
-    PathInfo& operator=(PathInfo&&) noexcept = default;
+    FILE_INFO_API PathInfo(PathInfo&&) noexcept = default;
+    FILE_INFO_API PathInfo& operator=(PathInfo&&) noexcept = default;
 
     /**
      * @brief Checks if the path exists in the filesystem.
      * @return True if the path exists, false otherwise.
      */
-    [[nodiscard]] bool exists() const;
+    [[nodiscard]]
+    FILE_INFO_API bool exists() const;
 
     /**
      * @brief Checks if the path refers to a regular file.
      * @return True if the path is a file, false otherwise.
      */
-    [[nodiscard]] bool isFile() const;
+    [[nodiscard]]
+    FILE_INFO_API bool isFile() const;
 
     /**
      * @brief Checks if the path refers to a directory.
      * @return True if the path is a directory, false otherwise.
      */
-    [[nodiscard]] bool isDirectory() const;
+    [[nodiscard]]
+    FILE_INFO_API bool isDirectory() const;
 
     /**
      * @brief Checks if the path is a symbolic link.
      * @return True if the path is a symbolic link, false otherwise.
      */
-    [[nodiscard]] bool isSymLink() const;
+    [[nodiscard]]
+    FILE_INFO_API bool isSymLink() const;
 
     /**
      * @brief Gets the filename component of the path.
      * @return The filename as a string.
      */
-    [[nodiscard]] std::string filename() const;
+    [[nodiscard]]
+    FILE_INFO_API std::string filename() const;
 
     /**
      * @brief Gets the file extension of the path.
      * @return The extension as a string.
      */
-    [[nodiscard]] std::string extension() const;
+    [[nodiscard]]
+    FILE_INFO_API std::string extension() const;
 
     /**
      * @brief Gets the parent directory of the path.
      * @return The parent path.
      */
-    [[nodiscard]] std::filesystem::path parentPath() const;
+    [[nodiscard]]
+    FILE_INFO_API std::filesystem::path parentPath() const;
 
     /**
      * @brief Gets the permissions of the path.
      * @return The permissions as a std::filesystem::perms value.
      */
-    [[nodiscard]] std::filesystem::perms permissions() const;
+    [[nodiscard]]
+    FILE_INFO_API std::filesystem::perms permissions() const;
 
 protected:
     /// Accessor for derived classes
     [[nodiscard]]
-    const std::filesystem::path& path() const;
+    FILE_INFO_API const std::filesystem::path& path() const;
 
 private:
-    struct Impl;
+    struct PathInfoImpl;
 
-    /// Custom deleter to avoid DLL-interface issues with MSVC
-    struct ImplDeleter {
-        void operator()(const Impl* p) const noexcept;
-    };
-
-    std::unique_ptr<Impl, ImplDeleter> m_impl;
+    std::unique_ptr<PathInfoImpl> m_impl;
 };
 
 #endif // FILETOOL_PATHINFO_HPP

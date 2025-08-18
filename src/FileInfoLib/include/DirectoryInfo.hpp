@@ -15,9 +15,9 @@
  * @class DirectoryInfo
  * @brief Provides utilities for directory inspection and statistics.
  */
-class FILE_INFO_API DirectoryInfo : public PathInfo {
+class DirectoryInfo : public PathInfo {
 public:
-    explicit DirectoryInfo(const std::filesystem::path &p);
+    FILE_INFO_API explicit DirectoryInfo(const std::filesystem::path &p);
 
     /**
      * @brief Lists all entries (files and directories) in the directory.
@@ -25,7 +25,7 @@ public:
      * @return Vector of paths to all entries.
      */
     [[nodiscard]]
-    std::vector<std::filesystem::path> listEntries(bool recursive = false) const;
+    FILE_INFO_API std::vector<std::filesystem::path> listEntries(bool recursive = false) const;
 
     /**
      * @brief Lists all files in the directory.
@@ -33,7 +33,7 @@ public:
      * @return Vector of paths to all files.
      */
     [[nodiscard]]
-    std::vector<std::filesystem::path> listFiles(bool recursive = false) const;
+    FILE_INFO_API std::vector<std::filesystem::path> listFiles(bool recursive = false) const;
 
     /**
      * @brief Lists all directories in the directory.
@@ -41,7 +41,7 @@ public:
      * @return Vector of paths to all directories.
      */
     [[nodiscard]]
-    std::vector<std::filesystem::path> listDirectories(bool recursive = false) const;
+    FILE_INFO_API std::vector<std::filesystem::path> listDirectories(bool recursive = false) const;
 
     /**
      * @brief Counts the number of files in the directory.
@@ -49,7 +49,7 @@ public:
      * @return Number of files.
      */
     [[nodiscard]]
-    size_t fileCount(bool recursive = false) const;
+    FILE_INFO_API size_t fileCount(bool recursive = false) const;
 
     /**
      * @brief Counts the number of directories in the directory.
@@ -57,7 +57,7 @@ public:
      * @return Number of directories.
      */
     [[nodiscard]]
-    size_t directoryCount(bool recursive = false) const;
+    FILE_INFO_API size_t directoryCount(bool recursive = false) const;
 
     /**
      * @brief Calculates the total size of all files in the directory.
@@ -65,7 +65,7 @@ public:
      * @return Total size in bytes.
      */
     [[nodiscard]]
-    uintmax_t totalSize(bool recursive = false) const;
+    FILE_INFO_API uintmax_t totalSize(bool recursive = false) const;
 };
 
 #endif // FILETOOL_DIRECTORYINFO_HPP
